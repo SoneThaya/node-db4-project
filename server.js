@@ -8,30 +8,30 @@ const server = express();
 server.use(helmet());
 server.use(express.json());
 
-server.get('/api/species', (req, res) => {
+server.get('/api/recipes', (req, res) => {
   // get all species from the database
-  db('species')
-  .then(species => {
-    res.status(200).json(species);
+  db('recipes')
+  .then(recipe => {
+    res.status(200).json(recipe);
   })
   .catch(error => {
     res.status(500).json(error);
   });
 });
 
-server.get('/api/animals', (req, res) => {
-  // get all animals from the database
-  // include species name
-  db('animals as a')
-    .leftJoin('species as s', 's.id', 'a.species_id')
-    .select('a.id', 'a.animal_name', 's.species_name')
-  .then(animals => {
-    res.status(200).json(animals);
-  })
-  .catch(error => {
-    res.status(500).json(error);
-  });
-});
+// server.get('/api/recipes', (req, res) => {
+//   // get all animals from the database
+//   // include species name
+//   db('animals as a')
+//     .leftJoin('species as s', 's.id', 'a.species_id')
+//     .select('a.id', 'a.animal_name', 's.species_name')
+//   .then(animals => {
+//     res.status(200).json(animals);
+//   })
+//   .catch(error => {
+//     res.status(500).json(error);
+//   });
+// });
 
 // create animal
 server.post('/api/animals', (req, res) => {
