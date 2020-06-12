@@ -1,21 +1,31 @@
 const db = require('../data/db-config')
 
 module.exports = {
-  find,
+  getRecipes,
   findById,
-  add,
+  getShoppingList,
+  getInstructions,
 }
 
-function find() {
+function getRecipes() {
   return db('recipes')
 }
 
 function findById(id) {
-  return db('recipes').where({id}).first()
+  return db('recipes').where({ id }).first();
 }
 
-function add(recipe) {
+function getShoppingList(id) {
+  return db('ingredients')
+    .join('recipe_details', 'recipe_details.recipe_id', 'ingredients.id')
+    .where('ingredients.id', id)
+    .select('recipe_details.quantity', 'ingredients.name')
+
+}
+
+function getInstructions(id) {
   return db('recipes')
-    .insert(recipe, 'id')
-    .then(ids => ({id: ids[0]}))
+    .join('instructions_table', 'recipes.id', 'instructions_table.recipe_id')
+    .where('recipes.id', id)
+    .select('instructions_table.step_number', 'instructions_table.instructions', 'recipes.name')
 }
